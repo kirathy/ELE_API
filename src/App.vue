@@ -1,27 +1,76 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <v-header :seller="seller"></v-header>
+    <div class="tab-wrapper">
+      <tab :tabs="tabs"></tab>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+  import VHeader from './components/v-header/v-header'
+  import Tab from 'components/tab/tab'
+  import Goods from 'components/goods/goods'
+  import Seller from 'components/seller/seller'
+  import Ratings from 'components/ratings/ratings'
+  import { getSeller } from 'api'
+  import qs from 'query-string'
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  export default {
+    name: 'app',
+    data () {
+      return {
+        seller: {
+          id: qs.parse(location.search).id
+        }
+      }
+    },
+    created () {
+      this._getSeller()
+    },
+    computed: {
+      tabs () {
+        return [
+          {
+            label: '商品',
+            component: Goods,
+            data: { seller: this.seller }
+          },
+          {
+            label: '评价',
+            component: Ratings,
+            data: { seller: this.seller }
+          },
+          {
+            label: '商家',
+            component: Seller,
+            data: { seller: this.seller }
+          }
+        ]
+      }
+    },
+    methods: {
+      // 将代码封装
+      _getSeller () {
+        getSeller({
+          id: this.seller.id
+        }).then((seller) => {
+          this.seller = seller
+        })
+      }
+    },
+    components: {
+      Tab,
+      VHeader
+    }
   }
-}
 </script>
 
-<style lang="stylus">
-#app
-  font-family Avenir, Helvetica, Arial, sans-serif
-  -webkit-font-smoothing antialiased
-  -moz-osx-font-smoothing grayscale
-  text-align center
-  color #2c3e50
-  margin-top 60px
+<style lang="stylus" rel="stylesheet/stylus" scoped>
+  .tab-wrapper
+    position fixed
+    top 136px
+    left 0
+    right 0
+    bottom 0
 </style>

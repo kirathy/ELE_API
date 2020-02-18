@@ -1,0 +1,78 @@
+<template>
+    <div class="cart-control">
+        <transition name="move">
+            <div class="cart-decrease" v-show="food.count" @click.stop="decrease"><i
+                    class="inner icon-remove_circle_outline"></i></div>
+        </transition>
+        <div class="cart-count" v-show="food.count">{{food.count}}</div>
+        <div class="cart-increase icon-add_circle" @click.stop="increase"></div>
+    </div>
+</template>
+
+<script>
+  const EVENT_ADD = 'add'
+  export default {
+    name: 'cart-control',
+    props: {
+      food: {
+        type: Object,
+        default () {
+          return {}
+        }
+      }
+    },
+    methods: {
+      decrease () {
+        if (this.food.count) {
+          this.food.count--
+        }
+      },
+      increase () {
+        if (!this.food.count) {
+          this.$set(this.food, 'count', 1)
+        } else {
+          this.food.count++
+        }
+        this.$emit(EVENT_ADD, event.target)
+      }
+    }
+  }
+</script>
+
+<style lang="stylus" rel="stylesheet/stylus" scoped>
+    @import "~common/stylus/variable"
+    .cart-control
+        display: flex
+        align-items: center
+        .cart-decrease
+            display: inline-block
+            padding: 6px
+            opacity: 1
+            font-size 0
+            .inner
+                display: inline-block
+                line-height: 24px
+                font-size: $fontsize-large-xxx
+                color: $color-blue
+                transition: all 0.4s linear
+                transform: rotate(0)
+            &.move-enter-active, &.move-leave-active
+                transition: all 0.4s linear
+            &.move-enter, &.move-leave-active
+                opacity: 0
+                transform: translate3d(24px, 0, 0)
+                .inner
+                    transform: rotate(180deg)
+        .cart-count
+            width: 12px
+            line-height: 24px
+            text-align: center
+            font-size: $fontsize-small-s
+            color: $color-grey
+        .cart-increase
+            display: inline-block
+            padding: 6px
+            line-height: 24px
+            font-size: $fontsize-large-xxx
+            color: $color-blue
+</style>
