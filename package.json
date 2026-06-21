@@ -33,7 +33,7 @@
     "stylus-loader": "^3.0.2",
     "vue-cli-plugin-cube-ui": "^0.2.5",
     "vue-template-compiler": "^2.6.11",
-    "webpack-post-compile-plugin": "^1.0.0",
+    "webpack-post-compile-plugin": "^1.2.3",
     "webpack-transform-modules-plugin": "^0.4.3"
   },
   "transformModules": {
